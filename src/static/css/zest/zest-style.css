@@ -1,0 +1,30 @@
+.zest-orange-bg {
+    background-color: #E54100 !important;
+}
+.zest-orange-bg-gradient {
+    background: #E54100;
+    background: -webkit-linear-gradient(90deg,  #E54100, #F18805) !important;
+    background: linear-gradient(90deg, #E54100, #F18805) !important;
+}
+.zest-black-bg {
+    background-color: #000000 !important;
+}
+.zest-white-bg {
+    background-color: #FFFFFF !important;
+}
+.zest-gray-bg {
+    background-color: rgb(53, 53, 53) !important;
+}
+
+.zest-orange-text {
+    color: #E54100 !important;
+}
+.zest-black-text {
+    color: #000000 !important;
+}
+.zest-white-text {
+    color: #FFFFFF !important;
+}
+.zest-gray-text {
+    color: rgb(53, 53, 53) !important;
+}
