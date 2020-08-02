@@ -1,13 +1,14 @@
 from django.urls import path
-from django.conf import settings
-from django.conf.urls.static import static
 from . import views
+from .feeds import LatestPostsFeed
 
 
 app_name = 'blog'
 
 urlpatterns = [
-    #path('', views.post_list, name='post_list'),
+    path('', views.post_list, name='post_list'),
+    path('tag/<slug:tag_slug>/', views.post_list, name='post_list_by_tag'),
     path('<int:day>/<int:month>/<int:year>/<slug:post>/', views.post_detail, name='post_detail'),
-    path('', views.test, name='test'),
-] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)
+    path('<int:post_id>/share/', views.post_share, name='post_share'),
+    path('feed/', LatestPostsFeed(), name='post_feed'),
+]

@@ -28,3 +28,20 @@
 .zest-gray-text {
     color: rgb(53, 53, 53) !important;
 }
+
+.zest-login-bg {
+    background-image: url(../../images/zest/bg/bg_1.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Customizing */
+
+.pagination li.active {
+    background-color: #E54100;
+}
+
+#breadcrumbs-wrapper .breadcrumbs .active {
+    font-weight: normal !important;
+    color: rgb(194, 194, 194) !important;
+}

@@ -1,0 +1,82 @@
+{% extends "../../base/base.html" %}
+{% load blog_tags %}
+{% load static %}
+
+{% block title %} {{ post.title }} {% endblock %}
+
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/pages/page-blog.css' %}">
+{% endblock %}
+
+{% block bc_title %}
+  {{ post.title }}
+{% endblock %}
+{% block bc_items %}
+<li class="breadcrumb-item"><a href="{% url 'blog:post_list' %}">Блог</a>
+<li class="breadcrumb-item active">{{ post.title }}</li>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="col s12">
+  <div class="container">
+    <div class="section">
+      <div class="card">
+        <div class="card-content">
+          <p class="caption mb-0">
+            <h4>{{ post.title }}</h4>
+            Published {{ post.publish }} by {{ post.author.first_name }}
+            <hr>
+            {{ post.body|linebreaks }}
+            <hr>
+            <a href="{% url 'blog:post_share' post.id %}"> Share this post </a>
+            <hr>
+              <h6>Similar posts</h6>
+              {% for post in similar_posts %}
+                <p>
+                  <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                </p>
+              {% empty %}
+                There are no similar posts yet.
+              {% endfor %}
+            <hr>
+            {% with comments.count as total_comments %}
+              <h6>
+                {{ total_comments }} comment{{ total_comments|pluralize }}
+              </h6>
+            {% endwith %}
+            <hr>
+            {% for comment in comments %}
+              <div class="comment">
+                <p class="info">
+                  Comment {{ forloop.counter }} by {{ comment.name }}
+                  {{ comment.created }}
+                </p>
+                {{ comment.body|markdown }}
+              </div>
+            {% empty %}
+              <p>There are no comments yet.</p>
+            {% endfor %}
+            <hr>
+            {% if new_comment %}
+              <h6>Your comment has been added.</h6>
+            {% else %}
+              <h6>Add a new comment</h6>
+              <form method="post">
+                {{ comment_form.as_p }}
+                {% csrf_token %}
+                <p>
+                  <input type="submit" value="Add comment">
+                </p>
+              </form>
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content-overlay"></div>
+</div>
+
+{% endblock %}
