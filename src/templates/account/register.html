@@ -1,0 +1,156 @@
+{% extends "account/account_base.html" %}
+{% load static %}
+{% block title %}
+Регистрация в ZEST-ЛК
+{% endblock %} 
+{% block content %}
+
+<div id="register-page" class="row">
+  <div class="col s12 m6 l4 z-depth-4 card-panel border-radius-6 register-card bg-opacity-8">
+    <form class="login-form" id="register-form" method="POST">
+    {% csrf_token %}
+      <div class="row">
+        <div class="input-field col s12">
+          <h5 class="ml-4">Регистрация в Zest-ЛК</h5>
+        </div>
+      </div>
+      {% comment %} <div class="row margin">
+        <div class="input-field col s12">
+          <i class="material-icons prefix pt-2">person_outline</i>
+          {{ user_form.username }}
+          <label for="{{ user_form.username.id_for_label }}" class="center-align">{{ user_form.username.label }}</label>
+        </div>
+      </div> {% endcomment %}
+      <div class="row margin">
+        <div class="input-field col s12"> 
+          <i class="material-icons prefix pt-2">mail_outline</i>
+          {{ user_form.email }}
+          <label for="{{ user_form.email.id_for_label }}">{{ user_form.email.label }}</label>
+        </div>
+      </div>
+      <div class="row margin">
+        <div class="input-field col s6">
+          <i class="material-icons prefix pt-2">face</i>
+          {{ user_form.first_name }}
+          <label for="{{ user_form.first_name.id_for_label }}">{{ user_form.first_name.label }}</label>
+        </div>
+        <div class="input-field col s6">
+          {{ user_form.last_name }}
+          <label for="{{ user_form.last_name.id_for_label }}">{{ user_form.last_name.label }}</label>
+        </div>
+      </div>
+      <div class="row margin">
+        <div class="input-field col s6">
+          <i class="material-icons prefix pt-2">lock_outline</i>
+          {{ user_form.password }}
+          <label for="{{ user_form.password.id_for_label }}">{{ user_form.password.label }}</label>
+        </div>
+        <div class="input-field col s6">
+          {{ user_form.password2 }}
+          <label for="{{ user_form.password2.id_for_label }}">{{ user_form.password2.label }}</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <button type="submit" id="form-submit"
+            class="btn waves-effect waves-light border-round gradient-45deg-purple-deep-orange col s12">Зарегистрироваться</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <p class="margin medium-small"><a href="{% url 'account:login' %}">Уже есть аккаунт?</a></p>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+{% block additional_js %} 
+<script src="{% static '/vendors/jquery-validation/jquery.validate.min.js' %}"></script>
+{% comment %} <script src="{% static '/js/scripts/form-validation.js' %}"></script> {% endcomment %}
+<script src="{% static '/vendors/formatter/jquery.formatter.min.js' %}"></script>
+<script src="{% static '/js/scripts/form-masks.js' %}"></script>
+<script>
+
+  $('select[required]').css({
+    position: 'absolute',
+    display: 'inline',
+    height: 0,
+    padding: 0,
+    border: '1px solid rgba(255,255,255,0)',
+    width: 0
+  }); 
+
+  {% verbatim  %}
+    $('#id_username').formatter({
+      'pattern': '{{******************************}}',
+      'persistent': false
+    });
+  {% endverbatim  %}
+
+  $("#register-form").validate({
+    rules: {
+      email: {
+        required: true,
+        email: true,
+        remote: {
+          url: "check_email/",
+          type: "post",
+        }
+      },
+      password: {
+        required: true,
+        minlength: 6
+      },
+      password2: {
+        required: true,
+        equalTo: "#id_password"
+      },
+      first_name: {
+        required: true,
+        minlength: 2
+      },
+      last_name: {
+        required: true,
+        minlength: 2
+      },
+      agree:"required",
+      },
+      //For custom messages
+      messages: {
+        email:{
+          required: "Введите E-mail",
+          email: "Пожалуйста, введите корректный E-mail",
+          remote: "Указанный E-mail уже используется",
+        },
+        first_name:{
+          minlength: "Требуется минимум 2 символа",
+          required: "Введите имя",
+        },
+        last_name:{
+          minlength: "Требуется минимум 2 символа",
+          required: "Введите фамилию",
+        },
+        password:{
+          minlength: "Пароль должен содержать минимум 6 символов",
+          required: "Введите пароль",
+        },
+        password2:{
+          required: "Введите пароль повторно",
+          equalTo: "Пароли должны совпадать",
+        },
+      },
+      errorElement : 'div',
+      errorPlacement: function(error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+          $(placement).append(error)
+        } else {
+      error.insertAfter(element);
+      }
+    }
+  });
+</script>
+
+{% endblock %}

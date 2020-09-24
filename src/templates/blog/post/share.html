@@ -1,0 +1,48 @@
+{% extends "../../base/base.html" %}
+{% load static %}
+
+{% block title %} Share a post {% endblock %}
+
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/pages/page-blog.css' %}">
+{% endblock %}
+
+{% block bc_title %}
+  Share a post
+{% endblock %}
+{% block bc_items %}
+<li class="breadcrumb-item"><a href="{% url 'blog:post_list' %}">Блог</a>
+<li class="breadcrumb-item active">Share a post</li>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="col s12">
+  <div class="container">
+    <div class="section">
+      <div class="card">
+        <div class="card-content">
+          <p class="caption mb-0">
+          {% if sent %}
+            <h4>E-mail successfully sent</h4>
+            "{{ post.title }}" was successfully sent to {{ form.cleaned_data.to }}.
+          {% else %}
+            <h4>Share "{{ post.title }}" by e-mail</h4>
+            <form method="post">
+              {{ form.as_p }}
+              {% csrf_token %}
+              <button class="btn waves-effect waves-light" type="submit" name="action">Send e-mail
+                <i class="material-icons right">send</i>
+              </button>
+            </form>
+          {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content-overlay"></div>
+</div>
+
+{% endblock %}
